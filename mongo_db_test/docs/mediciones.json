@@ -1,0 +1,25 @@
+{
+    "mediciones": [
+        {
+            "sensorId": "sensor_12345",
+            "ts": new Date(2024, 8, 15),
+            "tipo": "hum",
+            "valor": 60,
+            "ubicacion": "Ordes (A Coruña)"
+        },
+        {
+            "sensorId": "sensor_67890",
+            "ts": new Date(2024, 8, 20),
+            "tipo": "temp",
+            "valor": 24.0,
+            "ubicacion": "Santiago de Compostela (A Coruña)"
+        },
+        {
+            "sensorId": "sensor_54321",
+            "ts": new Date(2026, 1, 22),
+            "tipo": "temp",
+            "valor": 21.0,
+            "ubicacion": "A Coruña (A Coruña)"
+        }
+    ]
+}

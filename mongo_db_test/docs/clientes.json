@@ -1,0 +1,41 @@
+{
+    "clientes": [
+        {
+            "idCliente": "cliente_001",
+            "nombre": "Juan Pérez",
+            "emails": [{
+                "emailPrincipal": "juan.perez@example.com",
+                "secundario": "jperez@example.com"}
+            ],
+            "direcciones": [
+                {
+                    "calle": "Calle Falsa 123",
+                    "ciudad": "Madrid",
+                    "codigoPostal": "28013",
+                    "pais": "España"
+                },
+                {
+                    "calle": "Avenida Siempre Viva 742",
+                    "ciudad": "Barcelona",
+                    "codigoPostal": "08001",
+                    "pais": "España"
+                }
+            ]
+        },
+        {
+            "idCliente": "cliente_002",
+            "nombre": "María Gómez",
+            "emails": [
+                {"emailPrincipal": "maria.gomez@example.com"}
+            ],
+            "direcciones": [
+                {
+                    "calle": "Calle Luna 45",
+                    "ciudad": "Valencia",
+                    "codigoPostal": "46001",
+                    "pais": "España"
+                }
+            ]
+        }
+    ]
+}

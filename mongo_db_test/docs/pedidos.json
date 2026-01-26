@@ -1,0 +1,43 @@
+{
+    "pedidos": [
+        {
+            "idPedido": 1,
+            "idCliente": "cliente_001",
+            "fechaPedido": new Date(2024, 8, 16),
+            "lineas": [{
+                "sku": "producto_123",
+                "nombre": "Libro de Ciencia Ficción",
+                "cantidad": 2,
+                "precio": 15.50
+            }
+            ],
+            "estado": "Enviado"
+        },
+        {
+            "idPedido": 2,
+            "idCliente": "cliente_002",
+            "fechaPedido": new Date(2024, 8, 21),
+            "lineas": [{
+                "sku": "producto_456",
+                "nombre": "Juego de Mesa Estratégico",
+                "cantidad": 1,
+                "precio": 35.00
+            }
+            ],
+            "estado": "enviado"
+        },
+        {
+            "idPedido": 3,
+            "idCliente": "cliente_002",
+            "fechaPedido": new Date(2026, 1, 23),
+            "lineas": [{
+                "sku": "producto_789",
+                "nombre": "Auriculares Inalámbricos",
+                "cantidad": 120,
+                "precio": 85.75
+            }
+            ],
+            "estado": "Procesando"
+        }
+    ]
+}
