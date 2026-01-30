@@ -1,6 +1,5 @@
 package com.controlador;
 
-import java.nio.file.DirectoryStream.Filter;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -230,7 +229,7 @@ public class GestorEmpleados {
             Vista.mostrarEstadisticasDep(dep, empleados.size(), mediaSalario, maxSalario);
         }
     }
-    
+
     /**
      * Método para obtener la media del salario de los empleados
      * 

@@ -1,9 +1,83 @@
 package com.vista;
 
+import java.util.List;
 import java.util.Scanner;
+
+import org.bson.Document;
 
 public class Vista {
     private static Scanner scanner = new Scanner(System.in);
+
+    public static int mostrarMenuPrincipal() {
+        System.out.println("----- Menú Principal -----");
+        System.out.println("1. Ver todos los empleados");
+        System.out.println("2. Buscar empleados por departamento");
+        System.out.println("3. Empleados con salario > 1300 y oficio Profesora");
+        System.out.println("4. Subir/Decrementar salario o comisión de los analistas");
+        System.out.println("5. Media del salario de los empleados");
+        System.out.println("6. Estadísticas del departamento 10");
+        System.out.println("7. Visualiza el nombre del empleado que tiene el máximo salario");
+        System.out.println("8. Salir");
+        System.out.print("Seleccione una opción: ");
+
+        String opcion = scanner.nextLine();
+
+        switch (opcion) {
+            case "1":
+                System.out.println("> Has seleccionado ver todos los empleados.");
+                System.out.println();
+                System.out.println("Todos los empleados:");
+                return 1;
+            case "2":
+                System.out.println("> Has seleccionado buscar empleados por departamento.");
+                System.out.println();
+                System.out.println("Empleados del departamento:");
+                return 2;
+            case "3":
+                System.out.println("> Has seleccionado ver empleados con salario > 1300 y oficio Profesora.");
+                System.out.println();
+                System.out.println("Empleados con salario > 1300 y oficio Profesora:");
+                return 3;
+            case "4":
+                System.out.println("> Has seleccionado subir el salario o comisión de los analistas.");
+                System.out.println();
+                System.out.println("Subiendo/bajando el salario/comisión de los analistas...");
+                return 4;
+            case "5":
+                System.out.println("> Has seleccionado ver la media del salario de los empleados.");
+                System.out.println();
+                System.out.println("Media del salario de los empleados:");
+                return 5;
+            case "6":
+                System.out.println("> Has seleccionado ver estadísticas por departamento.");
+                System.out.println();
+                System.out.println("Estadísticas por departamento:");
+                return 6;
+            case "7":
+                System.out.println("> Has seleccionado ver el nombre del empleado que tiene el máximo salario.");
+                System.out.println();
+                System.out.println("Nombre del empleado con el máximo salario:");
+                return 7;
+            case "8":
+                System.out.println("> Has seleccionado salir.");
+                System.out.println("¡Hasta luego!");
+                return 8;
+            default:
+                System.out.println("Opción no válida. Por favor, inténtelo de nuevo.");
+        }
+        return -1;
+    }
+
+    public void instruccionesBusqueda() {
+        System.out.println("En el caso del departamento utilice números enteros.");
+    }
+
+    public static void imprimirListas(List<Document> lista) {
+        for (Document i : lista) {
+            System.out.println(i);
+        }
+        System.out.println("");
+    }
 
     public static int getModificarMenu() {
         boolean salir = false;
