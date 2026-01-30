@@ -24,7 +24,7 @@ public class Principal {
             System.out.println(empleado);
         }
         System.out.println();
-        /* 
+        
         // -- Empleados con departamento 10 [1 y luego dep + 10]--
         List<Document> empleados = GestorEmpleados.obtenerEmpleadosPorBusqueda();
 
@@ -50,7 +50,7 @@ public class Principal {
         System.out.println("Empleados con salario > 1300 y oficio Profesora:");
         for (Document empleado : empleados) {
             System.out.println(empleado);
-        } */
+        }
 
         // Sube el salario de los analistas en 100€, a todos los analistas
         GestorEmpleados.subirBajarValorPorOficio("Analista");
@@ -66,5 +66,12 @@ public class Principal {
 
         // Visualiza el nombre del empleado que tiene el máximo salario
         System.out.println("Empleado con salario máximo: " + GestorEmpleados.obtenerNombreEmpleadoMaxSalario());
+    
+        // Obtener los empleados con salario > 1300 y oficio Profesora
+        System.out.println("Empleado con salario menor a 1300 y oficio Profesora");
+        empleados = GestorEmpleados.obtenerEmpleadosSalarioMenorYOficio(1300, "Profesora");
+        for (Document d : empleados) {
+            System.out.println(d);
+        }
     }
 }

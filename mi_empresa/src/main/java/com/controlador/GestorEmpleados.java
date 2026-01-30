@@ -1,5 +1,6 @@
 package com.controlador;
 
+import java.nio.file.DirectoryStream.Filter;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import com.vista.Vista;
 public class GestorEmpleados {
     /**
      * Método para insertar un Empleado
+     * 
      * @param nombre
      * @param departamento
      * @param salario
@@ -41,6 +43,7 @@ public class GestorEmpleados {
 
     /**
      * Método para insertar un Empleado
+     * 
      * @param nombre
      * @param departamento
      * @param salario
@@ -70,6 +73,7 @@ public class GestorEmpleados {
 
     /**
      * Método para insertar un Empleado
+     * 
      * @param nombre
      * @param departamento
      * @param salario
@@ -101,6 +105,7 @@ public class GestorEmpleados {
 
     /**
      * Método que devuelve a todos los empleados
+     * 
      * @return
      */
     public static List<Document> obtenerEmpleados() {
@@ -115,11 +120,12 @@ public class GestorEmpleados {
 
     /**
      * Método que devuelve empleados según una búsqueda
+     * 
      * @param busqueda
      * @param valorBusqueda
      * @return
      */
-    public static List<Document> obtenerEmpleadosPorBusqueda(){
+    public static List<Document> obtenerEmpleadosPorBusqueda() {
         List<Document> empleados = new ArrayList<>();
         int numBusqueda = Vista.menuBusquedaEmpleados();
 
@@ -133,7 +139,8 @@ public class GestorEmpleados {
                     int valor = Integer.parseInt(siguienteValor);
                     mongoProvider.getCollection("empleados").find(Filters.eq(siguienteBusqueda, valor)).into(empleados);
                 } else {
-                    mongoProvider.getCollection("empleados").find(Filters.eq(siguienteBusqueda, siguienteValor)).into(empleados);
+                    mongoProvider.getCollection("empleados").find(Filters.eq(siguienteBusqueda, siguienteValor))
+                            .into(empleados);
                 }
             }
         }
@@ -143,22 +150,30 @@ public class GestorEmpleados {
 
     /**
      * Método para borrar un empleado por nombre
+     * 
      * @param nombre
      * @return
      */
-    public static long borrarEmpleadoPorNombre(String nombre){
+    public static long borrarEmpleadoPorNombre(String nombre) {
         try (MongoProvider mongoProvider = new MongoProvider()) {
             return mongoProvider.getCollection("empleados").deleteOne(Filters.eq("nombre", nombre)).getDeletedCount();
         }
     }
 
+    /**
+     * Método para modificar un empleado por busqueda
+     * 
+     * @param busqueda
+     * @param valorBusqueda
+     * @return
+     */
     public static long modificarEmpleadoPorBusqueda(String busqueda, String valorBusqueda) {
         try (MongoProvider mongoProvider = new MongoProvider()) {
             int opcion = Vista.getModificarMenu();
-            
+
             if (opcion != -1) {
                 String nuevoValor = Vista.pedirNuevoValor(opcion);
-                
+
                 if (nuevoValor != "") {
                     String campo = "";
 
@@ -181,7 +196,8 @@ public class GestorEmpleados {
                     }
 
                     Document updateDocument = new Document("$set", new Document(campo, nuevoValor));
-                    return mongoProvider.getCollection("empleados").updateOne(Filters.eq(busqueda, valorBusqueda), updateDocument).getModifiedCount();
+                    return mongoProvider.getCollection("empleados")
+                            .updateOne(Filters.eq(busqueda, valorBusqueda), updateDocument).getModifiedCount();
                 }
             }
         }
@@ -189,7 +205,9 @@ public class GestorEmpleados {
     }
 
     /**
-     * Visualiza por departamento el número de empleados, el salario medio y el máximo salario.
+     * Visualiza por departamento el número de empleados, el salario medio y el
+     * máximo salario.
+     * 
      * @param dep
      */
     public static void verEmpleadosPorDep(int dep) {
@@ -212,8 +230,13 @@ public class GestorEmpleados {
             Vista.mostrarEstadisticasDep(dep, empleados.size(), mediaSalario, maxSalario);
         }
     }
-
-    public static double obtenerMediaSalario() {
+    
+    /**
+     * Método para obtener la media del salario de los empleados
+     * 
+     * @return
+     */
+    public static int obtenerMediaSalario() {
         try (MongoProvider mongoProvider = new MongoProvider()) {
             List<Document> empleados = new ArrayList<>();
             mongoProvider.getCollection("empleados").find().into(empleados);
@@ -226,7 +249,12 @@ public class GestorEmpleados {
             return sumaSalarios / empleados.size();
         }
     }
-    
+
+    /**
+     * Método para obtener el nombre del empleado con más salario
+     * 
+     * @return
+     */
     public static String obtenerNombreEmpleadoMaxSalario() {
         try (MongoProvider mongoProvider = new MongoProvider()) {
             Document empleadoMax = mongoProvider.getCollection("empleados")
@@ -242,6 +270,11 @@ public class GestorEmpleados {
         }
     }
 
+    /**
+     * Método para subir o bajar un valor (salario/comision) por Oficio
+     * 
+     * @param oficio
+     */
     public static void subirBajarValorPorOficio(String oficio) {
         Boolean subirBajar = Vista.menuSubirBajarValor();
         String campoModificar = Vista.pedirCampoModificar();
@@ -251,6 +284,7 @@ public class GestorEmpleados {
             try (MongoProvider mongoProvider = new MongoProvider()) {
                 Document updateDocument = new Document("$inc", new Document(campoModificar, cantidadModificar));
                 mongoProvider.getCollection("empleados").updateMany(new Document("oficio", oficio), updateDocument);
+                System.out.println(campoModificar + " subido con éxito!");
             } catch (Exception e) {
                 System.err.println("Ha habido un error al subir el valor: " + e);
             }
@@ -258,9 +292,25 @@ public class GestorEmpleados {
             try (MongoProvider mongoProvider = new MongoProvider()) {
                 Document updateDocument = new Document("$inc", new Document(campoModificar, -cantidadModificar));
                 mongoProvider.getCollection("empleados").updateMany(new Document("oficio", oficio), updateDocument);
+                System.out.println(campoModificar + " bajado con éxito!");
             } catch (Exception e) {
                 System.err.println("Ha habido un error al bajar el valor: " + e);
             }
         }
+    }
+
+    public static List<Document> obtenerEmpleadosSalarioMenorYOficio(int numCheck, String oficio) {
+        List<Document> empleados = new ArrayList<>();
+
+        try (MongoProvider mongoProvider = new MongoProvider()) {
+            mongoProvider.getCollection("empleados")
+                    .find(Filters.and
+                            (Filters.eq("oficio", oficio), 
+                            Filters.lt("salario", 1300))).into(empleados);
+        } catch (Exception e) {
+            System.err.println("Ha habido un error al buscar: " + e);
+        }
+
+        return empleados;
     }
 }
