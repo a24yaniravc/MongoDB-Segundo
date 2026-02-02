@@ -37,7 +37,11 @@ public class Controlador {
                     break;
                 case 7:
                     String nombreMaxSalario = GestorEmpleados.obtenerNombreEmpleadoMaxSalario();
-                    System.out.println("Empleado con el máximo salario: " + nombreMaxSalario);
+                    if (nombreMaxSalario != null) {
+                        System.out.println("Empleado con el máximo salario: " + nombreMaxSalario);
+                    } else {
+                        System.out.println("No se encontró ningún empleado.");
+                    }
                     break;
                 case 8:
 
