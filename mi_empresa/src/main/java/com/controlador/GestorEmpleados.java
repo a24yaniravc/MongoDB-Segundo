@@ -112,6 +112,8 @@ public class GestorEmpleados {
 
         try (MongoProvider mongoProvider = new MongoProvider()) {
             mongoProvider.getCollection("empleados").find().into(empleados);
+        } catch (Exception e) {
+            System.err.println("Ha habido un error: " + e);
         }
 
         return empleados;
@@ -142,6 +144,8 @@ public class GestorEmpleados {
                             .into(empleados);
                 }
             }
+        } catch (Exception e) {
+            System.err.println("Ha habido un error al buscar: " + e);
         }
 
         return empleados;
@@ -236,17 +240,23 @@ public class GestorEmpleados {
      * @return
      */
     public static int obtenerMediaSalario() {
+        int sumaSalarios = 0;
+        List<Document> empleados = new ArrayList<>();
+        
         try (MongoProvider mongoProvider = new MongoProvider()) {
-            List<Document> empleados = new ArrayList<>();
             mongoProvider.getCollection("empleados").find().into(empleados);
 
-            int sumaSalarios = 0;
+            
             for (Document empleado : empleados) {
                 sumaSalarios += empleado.getInteger("salario");
             }
 
-            return sumaSalarios / empleados.size();
+            
+        } catch (Exception e) {
+            System.err.println("Ha habido un error: " + e);
         }
+
+        return (empleados.size() != 0) ? sumaSalarios / empleados.size() : 0;
     }
 
     /**
@@ -298,14 +308,14 @@ public class GestorEmpleados {
         }
     }
 
-    public static List<Document> obtenerEmpleadosSalarioMenorYOficio(int numCheck, String oficio) {
+    public static List<Document> obtenerEmpleadosSalarioMayorYOficio(int numCheck, String oficio) {
         List<Document> empleados = new ArrayList<>();
 
         try (MongoProvider mongoProvider = new MongoProvider()) {
             mongoProvider.getCollection("empleados")
-                    .find(Filters.and
-                            (Filters.eq("oficio", oficio), 
-                            Filters.lt("salario", 1300))).into(empleados);
+                    .find(Filters.and(Filters.eq("oficio", oficio),
+                            Filters.gt("salario", 1300)))
+                    .into(empleados);
         } catch (Exception e) {
             System.err.println("Ha habido un error al buscar: " + e);
         }

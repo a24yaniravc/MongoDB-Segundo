@@ -23,7 +23,7 @@ public class Controlador {
                     Vista.imprimirListas(empleados);
                     break;
                 case 3:
-                    empleados = GestorEmpleados.obtenerEmpleadosSalarioMenorYOficio(1300, "Profesora");
+                    empleados = GestorEmpleados.obtenerEmpleadosSalarioMayorYOficio(1300, "Profesora");
                     Vista.imprimirListas(empleados);
                     break;
                 case 4:
