@@ -5,8 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.Document;
+import org.bson.conversions.Bson;
 
+import com.mongodb.client.model.Accumulators;
+import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Sorts;
 import com.vista.Vista;
 
 /**
@@ -216,10 +220,12 @@ public class GestorEmpleados {
     public static void verEmpleadosPorDep(int dep) {
         try (MongoProvider mongoProvider = new MongoProvider()) {
             List<Document> empleados = new ArrayList<>();
-            mongoProvider.getCollection("empleados").find(Filters.eq("dep", dep)).into(empleados);
+            mongoProvider.getCollection("empleados")
+                    .find(Filters.eq("dep", dep)).into(empleados);
 
             int sumaSalarios = 0;
             int maxSalario = 0;
+
             for (Document empleado : empleados) {
                 int salario = empleado.getInteger("salario");
                 sumaSalarios += salario;
@@ -228,9 +234,41 @@ public class GestorEmpleados {
                 }
             }
 
-            double mediaSalario = sumaSalarios / empleados.size();
+            double mediaSalario = (empleados.size() != 0) ? (double) sumaSalarios / empleados.size() : 0;
 
             Vista.mostrarEstadisticasDep(dep, empleados.size(), mediaSalario, maxSalario);
+        } catch (Exception e) {
+            System.err.println("Ha habido un error al obtener empleados por departamento: " + e);
+        }
+    }
+
+    // CON AGREGATE
+    public static void verEmpleadosPorDepAggregate(){
+        List<Document> resultados = new ArrayList<>();
+        List<Bson> pipeline = List.of(
+            Aggregates.group("$dep",
+            Accumulators.sum("numEmpleados", 1),
+            Accumulators.avg("salarioMedio", "$salario"),
+            Accumulators.max("salarioMaximo", "$salario")
+        ),
+        Aggregates.sort(Sorts.ascending("dep"))
+        );
+
+        try (MongoProvider mongoProvider = new MongoProvider()) {
+            mongoProvider.getCollection("empleados")
+                .aggregate(pipeline)
+                .into(resultados);
+
+            for (Document resultado : resultados) {
+                int dep = resultado.getInteger("_id");
+                int numEmpleados = resultado.getInteger("numEmpleados");
+                double salarioMedio = resultado.getDouble("salarioMedio");
+                int salarioMaximo = resultado.getInteger("salarioMaximo");
+
+                Vista.mostrarEstadisticasDep(dep, numEmpleados, salarioMedio, salarioMaximo);
+            }
+        } catch (Exception e) {
+            System.err.println("Ha habido un error al obtener empleados por departamento: " + e);
         }
     }
 
@@ -242,16 +280,14 @@ public class GestorEmpleados {
     public static int obtenerMediaSalario() {
         int sumaSalarios = 0;
         List<Document> empleados = new ArrayList<>();
-        
+
         try (MongoProvider mongoProvider = new MongoProvider()) {
             mongoProvider.getCollection("empleados").find().into(empleados);
 
-            
             for (Document empleado : empleados) {
                 sumaSalarios += empleado.getInteger("salario");
             }
 
-            
         } catch (Exception e) {
             System.err.println("Ha habido un error: " + e);
         }
